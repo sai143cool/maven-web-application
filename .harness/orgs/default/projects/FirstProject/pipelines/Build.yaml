@@ -1,0 +1,39 @@
+pipeline:
+  name: Mavenbuild
+  identifier: Mavenbuild
+  projectIdentifier: FirstProject
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: mavenwebapp
+        build: <+input>
+  stages:
+    - stage:
+        name: BuildApp
+        identifier: BuildApp
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: mavenwebappbuild
+                  identifier: mavenwebappbuild
+                  spec:
+                    connectorRef: DockerHub_connector
+                    repo: sai143cool/mavenwebapp
+                    tags:
+                      - "1.0"
